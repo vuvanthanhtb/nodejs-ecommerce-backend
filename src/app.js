@@ -1,15 +1,18 @@
-const compression = require('compression')
-const express = require('express')
-const { default: helmet } = require('helmet')
-const morgan = require('morgan')
-const app = express()
+const compression = require('compression');
+const express = require('express');
+const { default: helmet } = require('helmet');
+const morgan = require('morgan');
+const app = express();
 
 // init middleware
-app.use(morgan("dev"))
-app.use(helmet())
-// app.use(compression())
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(compression());
 
 // init database
+require('./src/dbs/init.mongodb');
+const { checkOverload } = require('./src/helpers/check.connect');
+checkOverload();
 
 // init routes
 app.get('/', (req, res, next) => {
