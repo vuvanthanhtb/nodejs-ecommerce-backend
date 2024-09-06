@@ -11,3 +11,13 @@ x-api-key: 1707de4cad3e529c3c40c4b59e22dac2c84bb73f320fb3ecafd63d6bb090ddd17c78f
   "email": "shop08@mail.com",
   "password": "shop08"
 }
+
+### login
+POST {{url_dev}}/shop/login
+Content-Type: application/json
+x-api-key: 1707de4cad3e529c3c40c4b59e22dac2c84bb73f320fb3ecafd63d6bb090ddd17c78f9a123453c41813d04ae8498ef3e8e152749d83aff480357e431b7aba306
+
+{
+  "email": "shop08@mail.com",
+  "password": "shop08"
+}
