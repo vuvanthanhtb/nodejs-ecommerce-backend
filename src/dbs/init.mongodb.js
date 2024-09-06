@@ -2,7 +2,7 @@
 
 const { default: mongoose } = require('mongoose');
 const { db: { username, password }, app: { appName } } = require('../configs/config.mongodb');
-const { countConnect } = require('../helpers/check.connect');
+// const { countConnect } = require('../helpers/check.connect');
 
 const connectStr = `mongodb+srv://${username}:${password}@cluster0.h2bqi.mongodb.net/?retryWrites=true&w=majority&appName=${appName}`;
 
@@ -20,7 +20,7 @@ class Database {
     mongoose.connect(connectStr)
       .then(() => {
         console.log("Connected to database");
-        countConnect();
+        // countConnect();
       })
       .catch(err => console.log({ err }))
   }
