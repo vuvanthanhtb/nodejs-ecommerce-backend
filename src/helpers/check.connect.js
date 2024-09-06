@@ -1,6 +1,6 @@
 'use strict'
 
-import * as os from 'os';
+const os = require("os");
 const { default: mongoose } = require("mongoose");
 
 const _SECONDS = 5000;
