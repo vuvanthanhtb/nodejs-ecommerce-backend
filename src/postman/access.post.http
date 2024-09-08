@@ -19,5 +19,17 @@ x-api-key: 1707de4cad3e529c3c40c4b59e22dac2c84bb73f320fb3ecafd63d6bb090ddd17c78f
 
 {
   "email": "shop08@mail.com",
-  "password": "shop081"
+  "password": "shop08"
+}
+
+### logout
+POST {{url_dev}}/shop/logout
+Content-Type: application/json
+x-api-key: 1707de4cad3e529c3c40c4b59e22dac2c84bb73f320fb3ecafd63d6bb090ddd17c78f9a123453c41813d04ae8498ef3e8e152749d83aff480357e431b7aba306
+x-client-id: 66db369c7fadc865d27ed59c
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmRiMzY5YzdmYWRjODY1ZDI3ZWQ1OWMiLCJlbWFpbCI6InNob3AwOEBtYWlsLmNvbSIsImlhdCI6MTcyNTc4NjQ2MiwiZXhwIjoxNzI1OTU5MjYyfQ.8K6qLq0Uglb2Vun5kzQr_bZQ9s2j86HBGQUNOa0zTmE
+
+{
+  "email": "shop08@mail.com",
+  "password": "shop08"
 }

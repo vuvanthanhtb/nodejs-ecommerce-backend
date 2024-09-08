@@ -24,7 +24,7 @@ class AccessService {
     }
 
     const matchPassword = bcrypt.compareSync(password, foundShop.password);
-    
+
     if (!matchPassword) {
       throw new AuthFailureError("Error: Incorrect password");
     }
@@ -32,7 +32,7 @@ class AccessService {
     const privateKey = crypto.randomBytes(64).toString("hex");
     const publicKey = crypto.randomBytes(64).toString("hex");
 
-    const { _id: userId } = foundShop
+    const { _id: userId } = foundShop;
 
     const tokens = await createTokenPair(
       { userId: userId, email },
@@ -99,7 +99,7 @@ class AccessService {
           fields: ["_id", "email", "name"],
           object: newShop,
         }),
-        tokens
+        tokens,
       };
     }
 
@@ -107,6 +107,12 @@ class AccessService {
       code: "2000",
       metadata: null,
     };
+  };
+
+  static logout = async (keyStore) => {
+    const delKey = await KeyTokenService.removeKeyById(keyStore._id);
+    console.log({ delKey });
+    return delKey;
   };
 }
 
