@@ -15,6 +15,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    product_description: String,
     product_price: {
       type: Number,
       required: true,
