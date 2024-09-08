@@ -24,6 +24,7 @@ class AccessService {
     }
 
     const matchPassword = bcrypt.compareSync(password, foundShop.password);
+    
     if (!matchPassword) {
       throw new AuthFailureError("Error: Incorrect password");
     }

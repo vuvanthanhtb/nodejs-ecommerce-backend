@@ -1,22 +1,6 @@
 "use strict";
 
-const StatusCode = {
-  FORBIDDEN: 403,
-  UNAUTHORIZED: 401,
-  NOT_FOUND: 404,
-  CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  INTERNAL_SERVER_ERROR: 500,
-};
-
-const ReasonStatusCode = {
-  FORBIDDEN: "Forbidden resource",
-  UNAUTHORIZED: "Unauthorized to access resource",
-  NOT_FOUND: "Resource not found",
-  CONFLICT: "Conflict request",
-  UNPROCESSABLE_ENTITY: "Unprocessable entity",
-  INTERNAL_SERVER_ERROR: "Internal server error",
-};
+const { StatusCodes, ReasonPhrases } = require("../utils/httpStatusCode");
 
 class ErrorResponse extends Error {
   constructor(message, status) {
@@ -27,8 +11,8 @@ class ErrorResponse extends Error {
 
 class ConflictRequestError extends ErrorResponse {
   constructor(
-    message = ReasonStatusCode.CONFLICT,
-    statusCode = StatusCode.CONFLICT
+    message = ReasonPhrases.CONFLICT,
+    statusCode = StatusCodes.CONFLICT
   ) {
     super(message, statusCode);
   }
@@ -36,8 +20,8 @@ class ConflictRequestError extends ErrorResponse {
 
 class BadRequestError extends ErrorResponse {
   constructor(
-    message = ReasonStatusCode.CONFLICT,
-    statusCode = StatusCode.FORBIDDEN
+    message = ReasonPhrases.CONFLICT,
+    statusCode = StatusCodes.FORBIDDEN
   ) {
     super(message, statusCode);
   }
@@ -45,8 +29,8 @@ class BadRequestError extends ErrorResponse {
 
 class AuthFailureError extends ErrorResponse {
   constructor(
-    message = ReasonStatusCode.UNAUTHORIZED,
-    statusCode = StatusCode.UNAUTHORIZED
+    message = ReasonPhrases.UNAUTHORIZED,
+    statusCode = StatusCodes.UNAUTHORIZED
   ) {
     super(message, statusCode);
   }
