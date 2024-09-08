@@ -4,10 +4,15 @@ const shopModel = require("../models/shop.model");
 const bcrypt = require("bcrypt");
 const crypto = require("node:crypto");
 const KeyTokenService = require("./keytoken.service");
-const { createTokenPair } = require("../auth/authUtils");
+const { createTokenPair, verifyJWT } = require("../auth/authUtils");
 const { getInfoData } = require("../utils");
-const { BadRequestError, AuthFailureError } = require("../core/error.reponse");
+const {
+  BadRequestError,
+  AuthFailureError,
+  ForbiddenError,
+} = require("../core/error.reponse");
 const { findByEmail } = require("./shop.service");
+const { log } = require("node:console");
 
 const RolesShop = {
   SHOP: "SHOP",
@@ -17,6 +22,55 @@ const RolesShop = {
 };
 
 class AccessService {
+  static handleRefreshToken = async (refreshToken) => {
+    // Check token used
+    const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken);    
+    if (foundToken) {
+      const { userId } = await verifyJWT(refreshToken, foundToken.privateKey);
+      // delete all token in keyStore
+      await KeyTokenService.deleteKeyById(userId);
+      throw new ForbiddenError("Something wrong happend!! Please relogin");
+    }
+
+    const holderToken = await KeyTokenService.findByRefreshToken(refreshToken);
+    if (!holderToken) {
+      throw new AuthFailureError("Shop not registed");
+    }
+
+    const { userId, email } = await verifyJWT(
+      refreshToken,
+      holderToken.privateKey
+    );
+    console.log({holderToken});
+
+    const foundShop = await findByEmail({email});
+    
+    if (!foundShop) {
+      throw new AuthFailureError("Shop not registed");
+    }
+    
+    const tokens = await createTokenPair(
+      { userId: userId, email },
+      holderToken.publicKey,
+      holderToken.privateKey
+    );
+
+    // update token
+    await holderToken.updateOne({
+      $set: {
+        refreshToken: tokens.refreshToken,
+      },
+      $addToSet: {
+        refreshTokensUsed: refreshToken, // đã được sử dụng để lấy token mới rồi
+      },
+    });
+
+    return {
+      user: { userId, email },
+      tokens,
+    };
+  };
+
   static login = async ({ email, password, refreshToken = null }) => {
     const foundShop = await findByEmail({ email });
     if (!foundShop) {
