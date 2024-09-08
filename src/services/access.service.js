@@ -24,7 +24,9 @@ const RolesShop = {
 class AccessService {
   static handleRefreshToken = async (refreshToken) => {
     // Check token used
-    const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken);    
+    const foundToken = await KeyTokenService.findByRefreshTokenUsed(
+      refreshToken
+    );
     if (foundToken) {
       const { userId } = await verifyJWT(refreshToken, foundToken.privateKey);
       // delete all token in keyStore
@@ -41,14 +43,13 @@ class AccessService {
       refreshToken,
       holderToken.privateKey
     );
-    console.log({holderToken});
 
-    const foundShop = await findByEmail({email});
-    
+    const foundShop = await findByEmail({ email });
+
     if (!foundShop) {
       throw new AuthFailureError("Shop not registed");
     }
-    
+
     const tokens = await createTokenPair(
       { userId: userId, email },
       holderToken.publicKey,
@@ -67,6 +68,46 @@ class AccessService {
 
     return {
       user: { userId, email },
+      tokens,
+    };
+  };
+
+  static handleRefreshTokenV2 = async ({ refreshToken, user, keyStore }) => {
+    const { userId, email } = user;
+
+    if (keyStore.refreshTokenUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById(userId);
+      throw new ForbiddenError("Something wrong happend!! Please relogin");
+    }
+
+    if (keyStore.refreshToken !== refreshToken) {
+      throw new AuthFailureError("Shop not registed");
+    }
+
+    const foundShop = await findByEmail({ email });
+
+    if (!foundShop) {
+      throw new AuthFailureError("Shop not registed");
+    }
+
+    const tokens = await createTokenPair(
+      { userId: userId, email },
+      keyStore.publicKey,
+      keyStore.privateKey
+    );
+
+    // update token
+    await keyStore.updateOne({
+      $set: {
+        refreshToken: tokens.refreshToken,
+      },
+      $addToSet: {
+        refreshTokenUsed: refreshToken, // đã được sử dụng để lấy token mới rồi
+      },
+    });
+
+    return {
+      user,
       tokens,
     };
   };
