@@ -37,5 +37,5 @@ var inventorySchema = new Schema(
 
 //Export the model
 module.exports = {
-  Inventory: model(DOCUMENT_NAME, inventorySchema),
+  inventory: model(DOCUMENT_NAME, inventorySchema),
 };
