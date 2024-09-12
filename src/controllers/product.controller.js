@@ -5,6 +5,12 @@ const { param } = require("../routes");
 const ProductService = require("../services/product.service.v2");
 
 class ProductController {
+  /**
+   * @description Create product
+   * @method POST
+   * @param {Object} req
+   * @return {JSON}
+   */
   createProduct = async (req, res, next) => {
     new SuccessResponse({
       message: "Product created successfully",
@@ -12,6 +18,26 @@ class ProductController {
         ...req.body,
         product_shop: req.user.userId,
       }),
+    }).send(res);
+  };
+
+  /**
+   * @description Update product
+   * @method PUT
+   * @param {Object} req
+   * @return {JSON}
+   */
+  updateProduct = async (req, res, next) => {
+    new SuccessResponse({
+      message: "Product updated successfully",
+      metadata: await ProductService.updateProduct(
+        req.body.product_type,
+        req.params.product_id,
+        {
+          ...req.body,
+          product_shop: req.user.userId,
+        }
+      ),
     }).send(res);
   };
 

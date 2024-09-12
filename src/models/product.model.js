@@ -133,7 +133,7 @@ const furnitureSchema = new Schema(
     material: String,
   },
   {
-    collection: "furnitures",
+    collection: "furniture",
     timestamps: true,
   }
 );
@@ -142,5 +142,5 @@ module.exports = {
   product: model(DOCUMENT_NAME, productSchema),
   clothing: model("Clothing", clothingSchema),
   electronics: model("Electronics", electronicsSchema),
-  furnitures: model("Furniture", furnitureSchema),
+  furniture: model("Furniture", furnitureSchema),
 };

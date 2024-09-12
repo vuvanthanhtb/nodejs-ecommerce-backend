@@ -2,7 +2,7 @@
 
 const JWT = require("jsonwebtoken");
 const asyncHandler = require("../helpers/asyncHandler");
-const { AuthFailureError, NotFoundError } = require("../core/error.reponse");
+const { AuthFailureError, NotFoundError } = require("../core/error.response");
 const { findByUserId } = require("../services/keytoken.service");
 
 const HEADER = {

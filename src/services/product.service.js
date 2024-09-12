@@ -1,6 +1,6 @@
 "use strict";
 
-const { BadRequestError } = require("../core/error.reponse");
+const { BadRequestError } = require("../core/error.response");
 const { product, clothing, electronics } = require("../models/product.model");
 
 // define Factory class to create product

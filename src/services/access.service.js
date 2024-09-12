@@ -10,7 +10,7 @@ const {
   BadRequestError,
   AuthFailureError,
   ForbiddenError,
-} = require("../core/error.reponse");
+} = require("../core/error.response");
 const { findByEmail } = require("./shop.service");
 const { log } = require("node:console");
 
